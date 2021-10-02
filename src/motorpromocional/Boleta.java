@@ -5,6 +5,8 @@
  */
 package motorpromocional;
 
+import java.util.List;
+
 /**
  *
  * @author José Alcantara
@@ -13,19 +15,20 @@ public class Boleta {
     private int numeroBoleta; 
     private int cantidad; 
     private int totalCompra; 
-    private String codigosCupones;
+    private List<Cupon> codigosCupones;
     private String rutCliente;
 
     public Boleta() {
     }
 
-    public Boleta(int numeroBoleta, int cantidad, int totalCompra, String codigosCupones, String rutCliente) {
+    public Boleta(int numeroBoleta, int cantidad, int totalCompra, List<Cupon> codigosCupones, String rutCliente) {
         this.numeroBoleta = numeroBoleta;
         this.cantidad = cantidad;
         this.totalCompra = totalCompra;
         this.codigosCupones = codigosCupones;
         this.rutCliente = rutCliente;
     }
+
     
     public void sunarCantidad(int cantidad){
         if (this.cantidad == 0){
@@ -68,11 +71,11 @@ public class Boleta {
         this.totalCompra = totalCompra;
     }
 
-    public String getCodigosCupones() {
+    public List<Cupon> getCodigosCupones() {
         return codigosCupones;
     }
 
-    public void setCodigosCupones(String codigosCupones) {
+    public void setCodigosCupones(List<Cupon> codigosCupones) {
         this.codigosCupones = codigosCupones;
     }
 
@@ -83,13 +86,5 @@ public class Boleta {
     public void setRutCliente(String rutCliente) {
         this.rutCliente = rutCliente;
     }
-    
-    public void agregarCupones(String codigosCupones){
-        if(this.codigosCupones == null){
-            this.codigosCupones = codigosCupones;
-        }else{
-            this.codigosCupones = this.codigosCupones + ";" + codigosCupones;
-        }
-    
-    }
+
 }
