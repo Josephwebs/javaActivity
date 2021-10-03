@@ -46,22 +46,26 @@ public class MotorPromocional {
                 switch (nombreCupon) {
                     case "AUSTRAL2021":
                         if (!nombresCupones.contains(nombreCupon)){
-                            System.out.println("Felicidades, tu cupon es valido...");
+                            System.out.println("Felicidades, tu cupon es valido tienes 20% de descuento en 6 cervezas!!");
                             Cupon cuponCerveza = new Cupon("AUSTRAL2021", 0.2, "21/08/2021" ,"21/08/2022","Austral Patagonia", 6, 65497321);
                             nombresCupones.add("AUSTRAL2021");
                             cupones.add(cuponCerveza);
                         }else{
+                            System.out.println("--------------------------------------");
                             System.out.println("Ya as ingresado este cupon...");
+                            System.out.println("--------------------------------------");
                         }   
                         break;
                     case "MANI2021":
                         if (!nombresCupones.contains(nombreCupon)){
-                            System.out.println("Felicidades, tu cupon es valido...");
+                            System.out.println("Felicidades, tu cupon es valido tienes 40% de descuento en 5 paquetes de mani salado!!");
                             Cupon cuponMani = new Cupon("MANI2021", 0.4, "21/08/2021" ,"21/08/2022","Evercrisp", 5 , 34322342);
                             nombresCupones.add("MANI2021");
                             cupones.add(cuponMani);
                         }else{
+                            System.out.println("--------------------------------------");
                             System.out.println("Ya as ingresado este cupon...");
+                            System.out.println("--------------------------------------");
                         }   
                         break;
                     case "0":
@@ -90,54 +94,66 @@ public class MotorPromocional {
         int c = 0;
         int m = 0;
         while(!validador){
+            System.out.println("--------------------------------------");
             System.out.println("Muchas gracias por escogernos " + cliente.getNombre() + ", a continuacion le mostraremos lo que puede hacer... " );
             System.out.println("1. Agregar productos al carro");
             System.out.println("2. Ver boleta");
+            System.out.println("3. Salir");
+            System.out.println("--------------------------------------");
             int opcion = s.nextInt();
             s.nextLine();
             if (1 == opcion){   
                 validadorCompras = false;
                 while(!validadorCompras){
+                    System.out.println("--------------------------------------");
                     System.out.println("1. cerveza ... precio : $"+ cerveza.getPrecio());
                     System.out.println("2. mani    ... precio : $"+ mani.getPrecio());
                     System.out.println("3. Salir ");
                     System.out.print("Escoga una opcion : ");
+                    System.out.println("--------------------------------------");
                     int op = s.nextInt();
                     switch (op) {
                         case 1:
                             int cantidadCerveza = 0;
-                            if (cerveza.getStock() > 0){
+                            if (cerveza.getStock() >= 0){
                                 productos.add(cerveza);
                                     if (productos.contains(cerveza)) {
                                         cantidadCerveza = cantidadCerveza + 1;
                                         cerveza.setStock(cerveza.getStock()-cantidadCerveza);
-                                        System.out.println("quedan "+ cerveza.getStock()+" cervezas");
+                                        System.out.println("--------------------------------------");
+                                        System.out.println("quedan "+ (cerveza.getStock()+1) +" cervezas");
+                                        System.out.println("--------------------------------------");
                                     }
                                
                             }else{
+                                System.out.println("--------------------------------------");
                                 System.out.println("No queda cervezas en stock...");
+                                System.out.println("--------------------------------------");
                             }
                             break;
                         case 2:
-                            if (mani.getStock() > 0){
+                            if (mani.getStock() >= 0){
                                 int cantidadMani = 0;
                                 productos.add(mani);
                                     if (productos.contains(mani)) {
                                         cantidadMani = cantidadMani + 1;
                                         mani.setStock(mani.getStock() - cantidadMani );
-                                        System.out.println("quedan "+ mani.getStock()+" mani");
+                                        System.out.println("quedan "+ (mani.getStock()+1) +" mani");
                                     }
                             }else{
+                                System.out.println("--------------------------------------");
                                 System.out.println("No queda mani en stock...");
+                                System.out.println("--------------------------------------");
                             } break;
                         case 3:
                             validadorCompras = true;
                             break;
                         default:
+                            System.out.println("opcion invalida, intente denuevo");
                             break;
                     }
                         boolean cuponValido;
-                        if (cerveza.getStock() > 0){
+                        if (cerveza.getStock() >= 0 && op == 1 && productos.size() > 0){
                             c = c + 1;
                             if (c <= cuponCerveza.getMaxUnidades() && nombresCupones.contains("AUSTRAL2021")){
                                 cuponValido = true;
@@ -145,9 +161,11 @@ public class MotorPromocional {
                                 cuponValido = false;
                             }
                             int precioFinaLProducto = cerveza.descuento(cuponCerveza.getDescuento(), cerveza.getPrecio(), cuponValido);
-                            precios.add(precioFinaLProducto);
+                            if (cerveza.getStock() >= 0 && op == 1){
+                                precios.add(precioFinaLProducto);
+                            }
                             
-                        }else if (mani.getStock() > 0){
+                        }else if (mani.getStock() >= 0 && op == 2 && productos.size() > 0){
                             m = m + 1;
                             if (m <= cuponMani.getMaxUnidades() && nombresCupones.contains("MANI2021") ){
                                 cuponValido = true;
@@ -155,7 +173,9 @@ public class MotorPromocional {
                                 cuponValido = false;
                             }
                             int precioFinaLProducto = mani.descuento(cuponMani.getDescuento(), mani.getPrecio(), cuponValido);
-                            precios.add(precioFinaLProducto);
+                            if (mani.getStock() >= 0 && op == 2) {
+                                precios.add(precioFinaLProducto);
+                            }
                         }
                     
                     int total = 0;
@@ -174,7 +194,11 @@ public class MotorPromocional {
                 productos.forEach(producto -> {
                     System.out.println(producto.getNombre() +"\t\t" + producto.getPrecio());
                 });
-            }else{
+            }else if  (3 == opcion){
+                validador = true;
+            }
+            
+            else{
                 System.out.println("--------------------------------------");
                 System.out.println("Opcion no valida, intente nuevamente");
                 System.out.println("--------------------------------------");
