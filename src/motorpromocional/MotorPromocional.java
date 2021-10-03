@@ -82,60 +82,87 @@ public class MotorPromocional {
         boolean validador = false;
         boolean validadorCompras = false; 
         List<Producto> productos = new ArrayList();
-        List<String> nombresProductos = new ArrayList();
-
+        List<Integer> precios = new ArrayList<Integer>();
         Producto cerveza = new Producto("Cerveza Austral",65497321, "Austral Patagonia", 10, 1200);
         Producto mani = new Producto("Mani Salado",34322342, "Evercrisp", 10, 600);
         Cupon cuponCerveza = new Cupon("AUSTRAL2021", 0.2, "21/08/2021" ,"21/08/2022","Austral Patagonia", 6, 65497321);
-        Cupon cuponMani = new Cupon("MANI2021", 0.4, "21/08/2021" ,"21/08/2022","Evercrisp", 5 , 34322342);
-
-
+        Cupon cuponMani = new Cupon("MANI2021", 0.4, "21/08/2021" ,"21/08/2022","Evercrisp", 2 , 34322342);
+        int c = 0;
+        int m = 0;
         while(!validador){
             System.out.println("Muchas gracias por escogernos " + cliente.getNombre() + ", a continuacion le mostraremos lo que puede hacer... " );
             System.out.println("1. Agregar productos al carro");
             System.out.println("2. Ver boleta");
-            s.nextLine();
             int opcion = s.nextInt();
-            if (1 == opcion){    
+            s.nextLine();
+            if (1 == opcion){   
+                validadorCompras = false;
                 while(!validadorCompras){
                     System.out.println("1. cerveza ... precio : $"+ cerveza.getPrecio());
                     System.out.println("2. mani    ... precio : $"+ mani.getPrecio());
                     System.out.println("3. Salir ");
                     System.out.print("Escoga una opcion : ");
                     int op = s.nextInt();
-                    if (1 == op){
-                        int cantidadCerveza = 0;
-                        productos.add(cerveza);
-                        for (Producto producto : productos) {
-                            if (productos.contains(cerveza)) {
-                                cantidadCerveza = cantidadCerveza + 1;
+                    switch (op) {
+                        case 1:
+                            int cantidadCerveza = 0;
+                            if (cerveza.getStock() > 0){
+                                productos.add(cerveza);
+                                    if (productos.contains(cerveza)) {
+                                        cantidadCerveza = cantidadCerveza + 1;
+                                        cerveza.setStock(cerveza.getStock()-cantidadCerveza);
+                                        System.out.println("quedan "+ cerveza.getStock()+" cervezas");
+                                    }
+                               
+                            }else{
+                                System.out.println("No queda cervezas en stock...");
                             }
-                        }
-                        if (nombresCupones.contains("AUSTRAL2021")){
-                            int precioCerveza = cerveza.descuento( cuponCerveza.getDescuento() , cerveza.getPrecio());
-                            cerveza.setPrecio(precioCerveza);
-                        }
-                    }else if(2 == op) {
-                        int cantidadMani = 0;
-                        productos.add(mani);
-                        for (Producto producto : productos) {
-                            if (productos.contains(mani)) {
-                                cantidadMani = cantidadMani + 1;
-                            }
-                        }
-                        if (nombresCupones.contains("MANI2021")){
-                            int precioMani = mani.descuento( cuponMani.getDescuento() , cerveza.getPrecio());
-                            mani.setPrecio(precioMani);
-
-                        }
-                    }else if(3 == op) {
-                        validadorCompras = true;
+                            break;
+                        case 2:
+                            if (mani.getStock() > 0){
+                                int cantidadMani = 0;
+                                productos.add(mani);
+                                    if (productos.contains(mani)) {
+                                        cantidadMani = cantidadMani + 1;
+                                        mani.setStock(mani.getStock() - cantidadMani );
+                                        System.out.println("quedan "+ mani.getStock()+" mani");
+                                    }
+                            }else{
+                                System.out.println("No queda mani en stock...");
+                            } break;
+                        case 3:
+                            validadorCompras = true;
+                            break;
+                        default:
+                            break;
                     }
+                        boolean cuponValido;
+                        if (cerveza.getStock() > 0){
+                            c = c + 1;
+                            if (c <= cuponCerveza.getMaxUnidades() && nombresCupones.contains("AUSTRAL2021")){
+                                cuponValido = true;
+                            }else {
+                                cuponValido = false;
+                            }
+                            int precioFinaLProducto = cerveza.descuento(cuponCerveza.getDescuento(), cerveza.getPrecio(), cuponValido);
+                            precios.add(precioFinaLProducto);
+                            
+                        }else if (mani.getStock() > 0){
+                            m = m + 1;
+                            if (m <= cuponMani.getMaxUnidades() && nombresCupones.contains("MANI2021") ){
+                                cuponValido = true;
+                            }else {
+                                cuponValido = false;
+                            }
+                            int precioFinaLProducto = mani.descuento(cuponMani.getDescuento(), mani.getPrecio(), cuponValido);
+                            precios.add(precioFinaLProducto);
+                        }
+                    
                     int total = 0;
-                    for (Producto producto : productos) {
-                        total = total + producto.getPrecio();
+                    for (int precio : precios) {
+                        total = total + precio;
                     }
-                    System.out.println("Usted lleva " + productos.size() + " productos lo que da un total de $" + total + " pesos");
+                    System.out.println("Usted lleva " + precios.size() + " productos lo que da un total de $" + total + " pesos");
                     boleta.setCantidad(productos.size());
                     boleta.setTotalCompra(total);
                     boleta.setCodigosCupones(cupones);
@@ -144,10 +171,14 @@ public class MotorPromocional {
             }else if (2 == opcion){
                 System.out.println("------------BOLETA------------");
                 System.out.println("Productos en carro...");
-                for (Producto producto : productos) {
+                productos.forEach(producto -> {
                     System.out.println(producto.getNombre() +"\t\t" + producto.getPrecio());
-                    
-                }
+                });
+            }else{
+                System.out.println("--------------------------------------");
+                System.out.println("Opcion no valida, intente nuevamente");
+                System.out.println("--------------------------------------");
+
             }
         }
     }

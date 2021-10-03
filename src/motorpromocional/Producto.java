@@ -24,11 +24,14 @@ public class Producto {
         this.precio = precio;
     }
 
-    public int descuento(double porcentajeDescuento,int precio){
-        double descuento = this.precio * porcentajeDescuento;
-        this.precio = this.precio -  (int) Math.round(descuento);
-        System.out.println("El total de este producto con descuento es de : " + this.precio);
-        return this.precio;
+    public int descuento(double porcentajeDescuento,int precio, boolean cuponValido){
+        double descuento = precio * porcentajeDescuento;
+        precio = precio -  (int) Math.round(descuento);
+        if (cuponValido == true){
+            return precio;
+        }else{
+            return this.precio;
+        }
     }   
 
     public String getNombre() {
