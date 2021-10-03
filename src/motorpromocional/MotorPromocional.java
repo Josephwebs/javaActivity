@@ -36,45 +36,59 @@ public class MotorPromocional {
         System.out.println("¿Tienes algun cupon de descuento? Ingrese numero...");
         System.out.println("1.- Si ");
         System.out.println("2.- No");
-        int opcionCupon = s.nextInt();
-        s.nextLine();
         boolean cuponValidador = true;
-        if (opcionCupon == 1){
-            while (cuponValidador){
-                System.out.print("Ingrese el codigo de cupon o digite 0 para dejar de agregar cupones : ");
-                String nombreCupon = s.nextLine();
-                switch (nombreCupon) {
-                    case "AUSTRAL2021":
-                        if (!nombresCupones.contains(nombreCupon)){
-                            System.out.println("Felicidades, tu cupon es valido tienes 20% de descuento en 6 cervezas!!");
-                            Cupon cuponCerveza = new Cupon("AUSTRAL2021", 0.2, "21/08/2021" ,"21/08/2022","Austral Patagonia", 6, 65497321);
-                            nombresCupones.add("AUSTRAL2021");
-                            cupones.add(cuponCerveza);
-                        }else{
-                            System.out.println("--------------------------------------");
-                            System.out.println("Ya as ingresado este cupon...");
-                            System.out.println("--------------------------------------");
-                        }   
-                        break;
-                    case "MANI2021":
-                        if (!nombresCupones.contains(nombreCupon)){
-                            System.out.println("Felicidades, tu cupon es valido tienes 40% de descuento en 5 paquetes de mani salado!!");
-                            Cupon cuponMani = new Cupon("MANI2021", 0.4, "21/08/2021" ,"21/08/2022","Evercrisp", 5 , 34322342);
-                            nombresCupones.add("MANI2021");
-                            cupones.add(cuponMani);
-                        }else{
-                            System.out.println("--------------------------------------");
-                            System.out.println("Ya as ingresado este cupon...");
-                            System.out.println("--------------------------------------");
-                        }   
-                        break;
-                    case "0":
-                        cuponValidador = false;
-                        break;
-                    default:
-                        System.out.println("Cupon no valido...");
-                        break; 
+        boolean var = true;
+        while (var){
+            System.out.print("Ingrese opcion : ");
+            int opcionCupon = s.nextInt();
+            s.nextLine();
+            if (opcionCupon == 1){
+                while (cuponValidador){
+                    System.out.print("Ingrese el codigo de cupon o digite 0 para dejar de agregar cupones : ");
+                    String nombreCupon = s.nextLine();
+                    switch (nombreCupon) {
+                        case "AUSTRAL2021":
+                            if (!nombresCupones.contains(nombreCupon)){
+                                System.out.println("Felicidades, tu cupon es valido tienes 20% de descuento en 6 cervezas!!");
+                                Cupon cuponCerveza = new Cupon("AUSTRAL2021", 0.2, "21/08/2021" ,"21/08/2022","Austral Patagonia", 6, 65497321);
+                                nombresCupones.add("AUSTRAL2021");
+                                cupones.add(cuponCerveza);
+                            }else{
+                                System.out.println("--------------------------------------");
+                                System.out.println("Ya as ingresado este cupon...");
+                                System.out.println("--------------------------------------");
+                            }   
+                            break;
+                        case "MANI2021":
+                            if (!nombresCupones.contains(nombreCupon)){
+                                System.out.println("Felicidades, tu cupon es valido tienes 40% de descuento en 5 paquetes de mani salado!!");
+                                Cupon cuponMani = new Cupon("MANI2021", 0.4, "21/08/2021" ,"21/08/2022","Evercrisp", 5 , 34322342);
+                                nombresCupones.add("MANI2021");
+                                cupones.add(cuponMani);
+                            }else{
+                                System.out.println("--------------------------------------");
+                                System.out.println("Ya as ingresado este cupon...");
+                                System.out.println("--------------------------------------");
+                            }   
+                            break;
+                        case "0":
+                            cuponValidador = false;
+                            var = false;
+                            break;
+                        default:
+                            System.out.println("---------------------");
+                            System.out.println("Cupon no valido...");
+                            System.out.println("---------------------");
+                            break; 
+                    }
                 }
+            
+            }else if (opcionCupon == 2){ 
+                cuponValidador = false;
+            }else {
+                System.out.println("-------------------------------------");
+                System.out.println("Opcion no valida, intente denuevo");
+                System.out.println("-------------------------------------");
             }
         }
         cliente.setNombre(nombre);
@@ -86,7 +100,7 @@ public class MotorPromocional {
         boolean validador = false;
         boolean validadorCompras = false; 
         List<Producto> productos = new ArrayList();
-        List<Integer> precios = new ArrayList<Integer>();
+        List<Integer> precios = new ArrayList<>();
         Producto cerveza = new Producto("Cerveza Austral",65497321, "Austral Patagonia", 10, 1200);
         Producto mani = new Producto("Mani Salado",34322342, "Evercrisp", 10, 600);
         Cupon cuponCerveza = new Cupon("AUSTRAL2021", 0.2, "21/08/2021" ,"21/08/2022","Austral Patagonia", 6, 65497321);
@@ -100,6 +114,7 @@ public class MotorPromocional {
             System.out.println("2. Ver boleta");
             System.out.println("3. Salir");
             System.out.println("--------------------------------------");
+            System.out.print("Escoga una opcion : ");
             int opcion = s.nextInt();
             s.nextLine();
             if (1 == opcion){   
@@ -109,8 +124,9 @@ public class MotorPromocional {
                     System.out.println("1. cerveza ... precio : $"+ cerveza.getPrecio());
                     System.out.println("2. mani    ... precio : $"+ mani.getPrecio());
                     System.out.println("3. Salir ");
-                    System.out.print("Escoga una opcion : ");
                     System.out.println("--------------------------------------");
+                    System.out.print("Escoga una opcion : ");
+                   
                     int op = s.nextInt();
                     switch (op) {
                         case 1:
@@ -120,15 +136,20 @@ public class MotorPromocional {
                                     if (productos.contains(cerveza)) {
                                         cantidadCerveza = cantidadCerveza + 1;
                                         cerveza.setStock(cerveza.getStock()-cantidadCerveza);
-                                        System.out.println("--------------------------------------");
-                                        System.out.println("quedan "+ (cerveza.getStock()+1) +" cervezas");
-                                        System.out.println("--------------------------------------");
+                                        if (cerveza.getStock() > -1){
+                                            System.out.println("--------------------------------------");
+                                            System.out.println("quedan "+ (cerveza.getStock()) +" cervezas");
+                                            System.out.println("--------------------------------------");
+                                        }else{
+                                            System.out.println("--------------------------------");
+                                            System.out.println("No queda cervezas en stock...");
+                                            System.out.println("--------------------------------");       
+                                        }
                                     }
-                               
                             }else{
-                                System.out.println("--------------------------------------");
+                                System.out.println("--------------------------------");
                                 System.out.println("No queda cervezas en stock...");
-                                System.out.println("--------------------------------------");
+                                System.out.println("--------------------------------");
                             }
                             break;
                         case 2:
@@ -138,12 +159,20 @@ public class MotorPromocional {
                                     if (productos.contains(mani)) {
                                         cantidadMani = cantidadMani + 1;
                                         mani.setStock(mani.getStock() - cantidadMani );
-                                        System.out.println("quedan "+ (mani.getStock()+1) +" mani");
+                                        if (mani.getStock() > -1) {
+                                            System.out.println("--------------------------------------");
+                                            System.out.println("quedan "+ (mani.getStock()) +" mani");
+                                            System.out.println("--------------------------------------");
+                                        }else {
+                                            System.out.println("----------------------------");
+                                            System.out.println("No queda mani en stock...");
+                                            System.out.println("----------------------------");
+                                        }
                                     }
                             }else{
-                                System.out.println("--------------------------------------");
+                                System.out.println("----------------------------");
                                 System.out.println("No queda mani en stock...");
-                                System.out.println("--------------------------------------");
+                                System.out.println("----------------------------");
                             } break;
                         case 3:
                             validadorCompras = true;
@@ -195,6 +224,7 @@ public class MotorPromocional {
                     System.out.println(producto.getNombre() +"\t\t" + producto.getPrecio());
                 });
             }else if  (3 == opcion){
+                System.out.println("Muchas gracias por visitarnos,"+ cliente.getNombre()+ " esperamos que vuelvas pronto!!!");
                 validador = true;
             }
             
