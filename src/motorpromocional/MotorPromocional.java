@@ -85,6 +85,7 @@ public class MotorPromocional {
             
             }else if (opcionCupon == 2){ 
                 cuponValidador = false;
+                var = false;
             }else {
                 System.out.println("-------------------------------------");
                 System.out.println("Opcion no valida, intente denuevo");
@@ -126,7 +127,6 @@ public class MotorPromocional {
                     System.out.println("3. Salir ");
                     System.out.println("--------------------------------------");
                     System.out.print("Escoga una opcion : ");
-                   
                     int op = s.nextInt();
                     switch (op) {
                         case 1:

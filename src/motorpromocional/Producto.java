@@ -28,6 +28,7 @@ public class Producto {
         double descuento = precio * porcentajeDescuento;
         precio = precio -  (int) Math.round(descuento);
         if (cuponValido == true){
+            System.out.println("Se le a aplicado el descuento a este producto, el precio con descuento es de $"+ precio);
             return precio;
         }else{
             return this.precio;
